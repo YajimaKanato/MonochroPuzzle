@@ -390,6 +390,10 @@ PrefabInstance:
       propertyPath: _cloneTransform
       value: 
       objectReference: {fileID: 1683988879}
+    - target: {fileID: 1405053149144512511, guid: c0d051b0b26bb61449d89c2aa09b8af2, type: 3}
+      propertyPath: _hitLayer.m_Bits
+      value: 384
+      objectReference: {fileID: 0}
     - target: {fileID: 3575067632552706984, guid: c0d051b0b26bb61449d89c2aa09b8af2, type: 3}
       propertyPath: m_Name
       value: Clone of Player
@@ -837,6 +841,10 @@ PrefabInstance:
     - target: {fileID: 5398674314184670575, guid: 9ee0730326d39004cb9d7694ee45a2a1, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7467988621279507249, guid: 9ee0730326d39004cb9d7694ee45a2a1, type: 3}
+      propertyPath: _hitLayer.m_Bits
+      value: 320
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

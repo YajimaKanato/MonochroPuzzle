@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 5037754409708010376}
   - component: {fileID: 2735419708924211524}
   - component: {fileID: 6810071048616151619}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: GoalforClone
   m_TagString: GoalforClone
   m_Icon: {fileID: 0}
