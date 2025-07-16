@@ -204,4 +204,36 @@ public class GameDirector : MonoBehaviour
     {
         _index = num;
     }
+
+    /// <summary>
+    /// ステージの進捗状況をリセットする関数
+    /// </summary>
+    public void StageReset()
+    {
+        _stageClear = 0;
+        _stageOpen = 1 << 0;
+        PlayerPrefs.SetInt("StageClear", _stageClear);
+        PlayerPrefs.SetInt("StageOpen", _stageOpen);
+        _stageButton = GameObject.FindWithTag("StageGroup");
+        if (_stageButton != null)
+        {
+            int i = 0;
+            foreach (Transform stageButton in _stageButton.transform)
+            {
+                if ((_stageOpen & (1 << i)) != 0)
+                {
+                    stageButton.gameObject.GetComponent<Image>().color = Color.black;
+                }
+                else
+                {
+                    stageButton.gameObject.GetComponent<Image>().color = Color.gray;
+                }
+                i++;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("\"StageGroup\"タグを持つオブジェクトを取得できませんでした");
+        }
+    }
 }
