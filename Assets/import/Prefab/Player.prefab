@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7882622704122303896}
   - component: {fileID: 7467988621279507249}
   - component: {fileID: -4196838812782558546}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hitLayer:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 0
 --- !u!50 &-4196838812782558546
 Rigidbody2D:
   serializedVersion: 5

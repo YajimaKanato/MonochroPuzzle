@@ -19,8 +19,11 @@ public class GameDirector : MonoBehaviour
     [SerializeField]
     int _num;
 
-    //特殊な変数たち
-    static bool[] _stageOpen;//ステージ解放するかどうか
+    //PlayerPrefsで保存
+    int _stageOpen;//ステージ解放するかどうか
+    int _stageClear;//ステージをクリアしたかどうか
+    string _writeStageOpen;
+
     static bool _isPausing = false;//ポーズ画面かどうか
     public static bool IsPausing { get { return _isPausing; } }
 
@@ -32,17 +35,17 @@ public class GameDirector : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
             //ステージのクリア判定初期化
-            _stageOpen = new bool[_num];
-            for (int i = 0; i < _num; i++)
+            //データ取得
+            _writeStageOpen = PlayerPrefs.GetString("StageOpenData");
+            if (_writeStageOpen == "")
             {
-                if (i == 0)
-                {
-                    _stageOpen[i] = true;
-                }
-                else
-                {
-                    _stageOpen[i] = false;
-                }
+                _stageClear = 0;
+                _stageOpen = 1 << 0;
+                _writeStageOpen = "Save";
+            }
+            else
+            {
+                _stageOpen = PlayerPrefs.GetInt("StageOpen");
             }
 
             //ステージボタンの配色を初期化
@@ -52,7 +55,7 @@ public class GameDirector : MonoBehaviour
                 int i = 0;
                 foreach (Transform stageButton in _stageButton.transform)
                 {
-                    if (_stageOpen[i])
+                    if ((_stageOpen & (1 << i)) != 0)
                     {
                         stageButton.gameObject.GetComponent<Image>().color = Color.black;
                     }
@@ -98,9 +101,13 @@ public class GameDirector : MonoBehaviour
                 //クリア判定
                 if (_index != -1)
                 {
-                    if (_stageOpen[_index])
+                    if ((_stageOpen & (1 << _index)) != 0)
                     {
-                        _stageOpen[_index + 1] = true;
+                        _stageClear |= 1 << _index;
+                        _stageOpen |= 1 << (_index + 1);
+                        PlayerPrefs.SetInt("StageClear", _stageClear);
+                        PlayerPrefs.SetInt("StageOpen", _stageOpen);
+                        PlayerPrefs.SetString("StageOpenData", _writeStageOpen);
                     }
                 }
             }
@@ -148,12 +155,12 @@ public class GameDirector : MonoBehaviour
         if (scene.name == "Select")
         {
             _stageButton = GameObject.FindWithTag("StageGroup");
-            if( _stageButton != null)
+            if (_stageButton != null)
             {
                 int i = 0;
                 foreach (Transform stageButton in _stageButton.transform)
                 {
-                    if (_stageOpen[i])
+                    if ((_stageOpen & (1 << i)) != 0)
                     {
                         stageButton.gameObject.GetComponent<Image>().color = Color.black;
                     }
@@ -196,5 +203,37 @@ public class GameDirector : MonoBehaviour
     public void StageNumber(int num)
     {
         _index = num;
+    }
+
+    /// <summary>
+    /// ステージの進捗状況をリセットする関数
+    /// </summary>
+    public void StageReset()
+    {
+        _stageClear = 0;
+        _stageOpen = 1 << 0;
+        PlayerPrefs.SetInt("StageClear", _stageClear);
+        PlayerPrefs.SetInt("StageOpen", _stageOpen);
+        _stageButton = GameObject.FindWithTag("StageGroup");
+        if (_stageButton != null)
+        {
+            int i = 0;
+            foreach (Transform stageButton in _stageButton.transform)
+            {
+                if ((_stageOpen & (1 << i)) != 0)
+                {
+                    stageButton.gameObject.GetComponent<Image>().color = Color.black;
+                }
+                else
+                {
+                    stageButton.gameObject.GetComponent<Image>().color = Color.gray;
+                }
+                i++;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("\"StageGroup\"タグを持つオブジェクトを取得できませんでした");
+        }
     }
 }

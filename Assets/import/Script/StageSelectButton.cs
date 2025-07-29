@@ -24,4 +24,18 @@ public class StageSelectButton : MonoBehaviour
             Debug.LogWarning("GameDirectorオブジェクトが見つかりませんでした");
         }
     }
+
+    public void StageReset()
+    {
+        _director = GameObject.FindWithTag("GameDirector");
+        if (_director)
+        {
+            _director.GetComponent<GameDirector>().StageNumber(_num - 1);
+            _director.GetComponent<GameDirector>().StageReset();
+        }
+        else
+        {
+            Debug.LogWarning("GameDirectorオブジェクトが見つかりませんでした");
+        }
+    }
 }
